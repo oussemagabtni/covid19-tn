@@ -1,0 +1,67 @@
+
+<!-- Dependency resources -->
+<link rel="import" href="bower_components/polymer/polymer-element.html">
+
+<!-- Defines the example-map element -->
+<dom-module id="example-map">
+<template>
+<script src="frontend/good-map.js" async defer></script>
+<style>
+  good-map {
+    display: block;
+    width: 600px;
+    height: 300px;
+  }    
+</style>
+<div>
+	Here is the map:
+	<good-map on-google-map-ready="handleReady" api-key="API_KEY" latitude="30" longitude="-100" zoom="1" map-options='{"mapTypeId": "satellite"}'></good-map>
+</div>
+</template> <!-- Polymer boilerplate to register the example-map element --> 
+<script>
+        class ExampleMap extends Polymer.Element {
+        	static get is() {
+                return 'example-map'
+            }
+
+        	constructor() {
+        	      super();
+        	      this.map = null;
+        	    }
+        	
+        	static get properties() {
+        	    return {
+        	      zoom: {
+        	        type: Number,
+        	        value: 1,
+        	        observer: '_zoomChanged'
+        	      },
+        	      center: {
+        	    	type: String,
+        	    	observer: '_centerChanged'
+        	      }
+        	    }
+        	  }
+        	
+            handleReady(e){
+//             	window.alert('I am ready!');
+            	this.map = e.detail;
+//             	console.log(this.map);
+            }
+            
+            _zoomChanged(newValue, oldValue) {
+                if(this.map){
+            		this.map.set("zoom",newValue);
+                }
+              }
+            
+            _centerChanged(newValue, oldValue) {
+                if(this.map){
+                	this.map.setCenter(JSON.parse(newValue));
+                }
+              }
+            
+        }
+        customElements.define(ExampleMap.is, ExampleMap);
+</script> 
+</dom-module>
