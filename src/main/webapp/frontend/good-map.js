@@ -41,6 +41,7 @@
       super();
 
       this.map = null;
+      this.marker= null;
       this.apiKey = null;
       this.zoom = null;
       this.latitude = null;
@@ -48,6 +49,7 @@
       this.mapOptions = {};
     }
 
+   
     connectedCallback() {
       loadGoogleMaps(this.apiKey).then(() => {
         if (!this.mapOptions.zoom) {
@@ -60,7 +62,9 @@
           };
         }
         this.map = new google.maps.Map(this, this.mapOptions);
+        
         this.dispatchEvent(new CustomEvent('google-map-ready', { detail: this.map }));
+  
       });
     }
   });

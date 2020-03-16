@@ -1,5 +1,7 @@
 package com.konxsys.goodmapdemo;
 
+import java.util.Iterator;
+
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.polymertemplate.EventHandler;
@@ -12,12 +14,17 @@ import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 public class ExampleMap extends PolymerTemplate<ExampleMapModel> {
 
 	public ExampleMap() {
+		getElement().setAttribute("style", "width: 100%;");
 	}
 	
 	@EventHandler
     private void handleReady() {
-//        System.out.println("Received a handle ready event");
-    }
+		Iterator<Location> it = MainView.locations.iterator();
+		while (it.hasNext()) {
+			Location location = (Location) it.next();
+			showMarker(location.getLongitude(), location.getLatitude(), location.toString());
+		}
+	}
 	
 	public void setZoom(int zoom) {
 		getElement().setProperty("zoom", zoom);
@@ -31,5 +38,9 @@ public class ExampleMap extends PolymerTemplate<ExampleMapModel> {
 	public void setCenter(double latitude, double longitude) {
 		getElement().setProperty("center",String.format("{\"lat\":%.6f, \"lng\":%.6f}",latitude, longitude));
 		
+	}
+	
+	public void showMarker(double longitude, double latitude,String texte) {
+		getElement().callFunction("showMarker", longitude,latitude,texte);
 	}
 }
